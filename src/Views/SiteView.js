@@ -8,14 +8,12 @@ export function SiteView( { auth, user, firebase, firestore, authSignout } ) {
 
     return (
         <>
-
             <Container>
                 { user ? <UserUI user={user} firebase={firebase} firestore={firestore}/> : <GuestUI auth={auth} firebase={firebase} firestore={firestore} />}
             </Container>
             <Container>
                 <Signout user={user} authSignout={authSignout}/>
             </Container>
-
         </>
     );
 }

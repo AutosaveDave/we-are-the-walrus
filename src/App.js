@@ -8,24 +8,31 @@ import 'firebase/compat/analytics';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { firebaseConfig } from "./firebaseConfig";
-import { ViewRouter } from './Views/ViewRouter';
+import { SiteView } from './Views/SiteView';
+import { useParams } from 'react-router-dom';
+import { GameView } from './Views/GameView';
 
 firebase.initializeApp( firebaseConfig );
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
-export default function App() {
+export default function App( { currentView } ) {
 
   const [ user, authLoading, authError ] = useAuthState(auth);
-
+  const { game_id } = useParams();
   const authSignout = () => {
     auth.signOut();
   }
-  
+  console.log(currentView)
   return (
     <div className="App">
-      <ViewRouter auth={auth} user={user} firebase={firebase} firestore={firestore} authSignout={authSignout} />
+      <>{ currentView === 'site' &&
+        <SiteView auth={auth} user={user} firebase={firebase} firestore={firestore} authSignout={authSignout} />
+      }</>
+      <>{ currentView === 'game' &&
+        <GameView game_id={game_id} auth={auth} user={user} firebase={firebase} firestore={firestore} authSignout={authSignout} />
+      }</>
     </div>
   );
 }

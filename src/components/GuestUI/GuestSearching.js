@@ -4,7 +4,6 @@ import 'firebase/compat/auth';
 import 'firebase/compat/analytics';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { Button, TextField, Typography } from "@mui/material";
-import { Login } from "./Login";
 import { Navigate } from "react-router-dom";
 
 export function GuestSearching( { sessionsRef, joinPhrase, validPhrase } ) {
