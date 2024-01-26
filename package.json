@@ -1,7 +1,9 @@
 {
   "name": "we-are-the-walrus",
+  "homepage": "https://autosavedave.github.io/we-are-the-walrus",
+  "main": "index.html",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
