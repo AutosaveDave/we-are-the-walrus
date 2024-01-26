@@ -9,7 +9,7 @@ import { updateDoc, doc } from 'firebase/firestore';
 export function GameUI( { userData, getUserId, firestore, setPage, gameId, sessionsRef } ) {
     const sessionDoc = doc( sessionsRef, gameId );
     const [ sessionData, sessionLoading, error, sessionSnapshot ] = useDocumentData( sessionDoc );
-    if(!sessionLoading) {
+    if(!sessionLoading){
         console.log('sessionDoc values:')
         console.log(sessionData)
     }
