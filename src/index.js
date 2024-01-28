@@ -15,8 +15,8 @@ const router = createBrowserRouter([
     element: <App currentView={'site'}/>,
     loader: ( { params } ) => false,
   },
-], { basename: process.env.REACT_APP_PUBLIC_URL } );
-console.log(process.env.REACT_APP_PUBLIC_URL)
+], { basename: process.env.PUBLIC_URL } );
+console.log(process.env.PUBLIC_URL)
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
