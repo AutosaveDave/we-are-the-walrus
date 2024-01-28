@@ -25,6 +25,7 @@ export default function App( { currentView } ) {
     auth.signOut();
   }
   console.log(currentView)
+  console.log(game_id)
   return (
     <div className="App">
       <>{ currentView === 'site' &&
