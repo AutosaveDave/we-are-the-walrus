@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/we-are-the-walrus/static/css/main.f855e6bc.css",
-    "main.js": "/we-are-the-walrus/static/js/main.6d54ae6e.js",
-    "index.html": "/we-are-the-walrus/index.html",
-    "main.f855e6bc.css.map": "/we-are-the-walrus/static/css/main.f855e6bc.css.map",
-    "main.6d54ae6e.js.map": "/we-are-the-walrus/static/js/main.6d54ae6e.js.map"
+    "main.css": "/static/css/main.f855e6bc.css",
+    "main.js": "/static/js/main.d04eb1e0.js",
+    "index.html": "/index.html",
+    "main.f855e6bc.css.map": "/static/css/main.f855e6bc.css.map",
+    "main.d04eb1e0.js.map": "/static/js/main.d04eb1e0.js.map"
   },
   "entrypoints": [
     "static/css/main.f855e6bc.css",
-    "static/js/main.6d54ae6e.js"
+    "static/js/main.d04eb1e0.js"
   ]
 }
