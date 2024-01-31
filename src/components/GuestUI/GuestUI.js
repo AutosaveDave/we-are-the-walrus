@@ -7,9 +7,11 @@ import { Button } from "@mui/material";
 import { Login } from "./Login";
 import { GuestHome } from "./GuestHome";
 import { GuestJoin } from "./GuestJoin";
+import { useUserAuth } from "../../context/UserAuthProvider";
 
 
-export function GuestUI( { auth, firebase, firestore } ) {
+export function GuestUI(  ) {
+    const { auth, firebase, firestore } = useUserAuth();
     const [ page, setPage ] = useState( 'home' );
     const sessionsRef = firestore.collection('Sessions');
     const guestsRef = firestore.collection( 'Guests' );

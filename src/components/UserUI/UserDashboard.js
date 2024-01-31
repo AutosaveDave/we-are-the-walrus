@@ -4,22 +4,19 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import 'firebase/compat/analytics';
 import { updateDoc, doc } from 'firebase/firestore';
+import { Signout } from "./Signout";
+import { useUserData } from "../../context/UserDataProvider";
 
-export function UserDashboard( { usersRef, user, userData, getUserId, firestore, firebase, setPage } ) {
+export function UserDashboard( { setPage } ) {
+    const { userData, changeUsername } = useUserData();
     const [ editingUsername, setEditingUsername ] = useState( false );
     const [ newUsername, setNewUsername ] = useState( userData.username );
     const handleEditBtnClick = () => { setEditingUsername( true ); }
     const handleCancelEditClick = () => { setEditingUsername( false ); }
-    const handleEditUsername = ( e ) => { setNewUsername( e.target.value ) }
-    const handleHostGameClick = () => { setPage( 'host' ) }
+    const handleEditUsername = ( e ) => { setNewUsername( e.target.value ); }
+    const handleHostGameClick = () => { setPage( 'host' ); }
     const handleSubmitClick = async () => {
-        const uid = getUserId();
-        if( uid ) {
-            const userDoc = doc( usersRef, uid );
-            return await updateDoc( userDoc, { username: newUsername, nickname: newUsername } )
-                .then( handleCancelEditClick )
-                .catch( error => { console.log(error) } );
-        }
+        await changeUsername( newUsername, handleCancelEditClick );
     }
     return <>
         { editingUsername 
@@ -34,6 +31,7 @@ export function UserDashboard( { usersRef, user, userData, getUserId, firestore,
             </>
         }
         <Button onClick={handleHostGameClick}>Host Game</Button>
-        
+        <br/><br/>
+        <Signout/>
     </>
 }

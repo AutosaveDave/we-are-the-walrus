@@ -1,17 +1,17 @@
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useUserAuth } from "../../context/UserAuthProvider";
 import { firebaseConfig } from "../../firebaseConfig";
 import { Button } from "@mui/material";
 
-export function Login( {auth, firebase} ) {
-
-    const signInWithGoogle = () => {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider);
-    }
+export function Login(  ) {
   
-    return (
-      <>
-        <Button className="login-btn" onClick={signInWithGoogle}>Sign in with Google</Button>
-      </>
-    )
+  const { signInWithGoogle } = useUserAuth();
+  
+
+  return (
+    <>
+      <Button className="login-btn" onClick={signInWithGoogle}>Sign in with Google</Button>
+    </>
+  )
   
   }

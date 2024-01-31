@@ -1,39 +1,41 @@
 import React from 'react';
 import './App.css';
-
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/firestore';
-import 'firebase/compat/auth';
-import 'firebase/compat/analytics';
-
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { firebaseConfig } from "./firebaseConfig";
 import { SiteView } from './Views/SiteView';
-import { useParams } from 'react-router-dom';
+import { useLoaderData, useParams } from 'react-router-dom';
 import { GameView } from './Views/GameView';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { UserAuthProvider } from './context/UserAuthProvider';
+import { UserDataProvider } from './context/UserDataProvider';
+import { SessionsProvider } from './context/SessionsContext';
+import UserDataSwitch from './context/UserDataSwitch';
+import SessionsSwitch from './context/SessionsSwitch';
 
-firebase.initializeApp( firebaseConfig );
+const router = createBrowserRouter([
+      {
+        path: "game/:game_id",
+        element: <GameView/>,
+        loader: ( { params } ) => { return { game_id: params.game_id, currentView: 'game' } },
+      },
+      {
+        path: "/",
+        element: <SiteView />,
+        loader: ( { params } ) => { return { game_id: false, currentView: 'site' } },
+      }, 
+], { basename: process.env.REACT_APP_PUBLIC_URL } );
+console.log(process.env.REACT_APP_PUBLIC_URL)
 
-const auth = firebase.auth();
-const firestore = firebase.firestore();
+export default function App() {
 
-export default function App( { currentView } ) {
-
-  const [ user, authLoading, authError ] = useAuthState(auth);
-  const { game_id } = useParams();
-  const authSignout = () => {
-    auth.signOut();
-  }
-  console.log(currentView)
-  console.log(game_id)
   return (
     <div className="App">
-      <>{ currentView === 'site' &&
-        <SiteView auth={auth} user={user} firebase={firebase} firestore={firestore} authSignout={authSignout} />
-      }</>
-      <>{ currentView === 'game' &&
-        <GameView game_id={game_id} auth={auth} user={user} firebase={firebase} firestore={firestore} authSignout={authSignout} />
-      }</>
+      <UserAuthProvider>
+        <UserDataSwitch>
+          <SessionsSwitch>
+            <RouterProvider router={router} />
+          </SessionsSwitch>
+        </UserDataSwitch>
+      </UserAuthProvider>
     </div>
   );
 }

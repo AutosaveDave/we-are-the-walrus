@@ -3,20 +3,19 @@ import { TextField, Typography, Button, FormControl, FormControlLabel, FormLabel
 import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import 'firebase/compat/analytics';
-import { updateDoc, doc } from 'firebase/firestore';
+import { useUserData } from "../../context/UserDataProvider";
+import { useSessions } from "../../context/SessionsContext";
+import { Navigate } from "react-router-dom";
 
-export function HostGame( { userData, getUserId, firestore, setPage, setGameId, sessionsRef } ) {
+export function HostGame() {
+    const { userData, getUserId } = useUserData();
+    const { createSession } = useSessions();
     const uid = getUserId();
     
-
     const [ title, setTitle ] = useState( '' );
     const [ joinPhrase, setJoinPhrase ] = useState( '' );
     const [ playing, setPlaying ] = useState( true );
-
-    const getNewGameId = ( res ) => {
-        const segs = res._delegate._key.path.segments;
-        return segs[ segs.length - 1 ];
-    } 
+    const [ gameReady, setGameReady ] = useState( false );
 
     const handleTitleInput = ( e ) => {
         setTitle( e.target.value );
@@ -27,8 +26,8 @@ export function HostGame( { userData, getUserId, firestore, setPage, setGameId, 
     const handlePlayingChange = ( e ) => {
         setPlaying( e.target.value );
     }
-    const createSession = async () => {
-        await sessionsRef.add( {
+    const getNewSessionObj = () => {
+        return {
             title: title,
             joinPhrase: joinPhrase,
             hostId: uid,
@@ -37,15 +36,10 @@ export function HostGame( { userData, getUserId, firestore, setPage, setGameId, 
             spectators: ( playing ? [] : [ { id:uid, nickname:userData.nickname } ] ),
             mode: '',
             chat: [],
-        } )
-        .then( res => { 
-            const gid = getNewGameId( res );
-            setGameId( gid );
-            setPage( 'lobby' );
-         } )
-        .catch( error => {
-            console.log( error );
-        } )
+        };
+    }
+    const handleCreateSession = () => {
+        createSession( getNewSessionObj(), setGameReady )
     }
 
     return <>
@@ -66,7 +60,8 @@ export function HostGame( { userData, getUserId, firestore, setPage, setGameId, 
             </RadioGroup>
         </FormControl>
         <br/><br/>
-        <Button onClick={createSession} >Start Session</Button>
+        <Button onClick={handleCreateSession} >Start Session</Button>
         <br/><br/>
+        { gameReady && <Navigate to={`/game/${ gameReady }`} replace={true} /> }
     </>
 }
